@@ -23,7 +23,7 @@ if ( is_single() ) {
 $ico_path = plugin_dir_url( __FILE__ );
 
 $content .= '<p class="ww-sociallinks">If you liked this article, then please follow us on <a href="http://x.com/wheelert" title="WheelerWire" target="_blank" rel="nofollow">
-<img src="{ico_path}/icons/x-50.png" />
+<img src="{$ico_path}/icons/x-50.png" />
 
 </a></p>';
  
