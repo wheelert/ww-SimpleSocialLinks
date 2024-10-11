@@ -1,0 +1,18 @@
+/* Add your custom styles here */
+.ww-sociallinks{
+    text-align: right;
+}
+
+.ww-sociallinks a img{
+    border: solid 1px #cfcfcf;
+    border-radius: 50px;
+    margin: 5px;
+    padding: 5px;
+    width: 40px;
+    background-color: #eee;
+}
+
+.ww-sociallinks a img:hover{
+    background-color: #cfcfcf;
+}
+
