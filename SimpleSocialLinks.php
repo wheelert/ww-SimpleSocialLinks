@@ -15,7 +15,8 @@ Domain Path:  /languages
 
 // Include other plugin files
 require_once(plugin_dir_path(__FILE__) . 'includes/scripts.php');
-//require_once(plugin_dir_path(__FILE__) . 'includes/shortcodes.php');
+require_once(plugin_dir_path(__FILE__) . 'includes/shortcodes.php');
+
 function ww_sl_options_page_html() {
 	// check user capabilities
 	if ( ! current_user_can( 'manage_options' ) ) {
@@ -120,6 +121,30 @@ function my_textbox_callback($args){
     echo '<input name="'.$name.'" value="'. get_option($name) .'" placeholder="https://" size="70" />';
 }
 
+//
+// add settings saved message
+//
+add_action( 'admin_notices', 'ww_sociallinks_notice' );
+
+function ww_sociallinks_notice() {
+
+	if(
+		isset( $_GET[ 'page' ] ) 
+		&& 'ww_sl' == $_GET[ 'page' ]
+		&& isset( $_GET[ 'settings-updated' ] ) 
+		&& true == $_GET[ 'settings-updated' ]
+	) {
+		?>
+			<div class="notice notice-success is-dismissible">
+				<p>
+					<strong>Settings saved.</strong>
+				</p>
+			</div>
+		<?php
+	}
+
+}
+
 
 //
 // Main plugin function
@@ -133,19 +158,25 @@ if ( is_single() ) {
 // Add URLs to your own Twitter and Facebook profiles
 $ico_path = plugin_dir_url( __FILE__ );
 
+$post_url = get_permalink();    
+$post_title = get_the_title();
 
 $option_1 = get_option("option_1");
+$option_1 = '<a href="http://twitter.com/share?text='.$post_title.'&url='.$post_url.'" target="_blank" rel="nofollow"><img src="'.$ico_path.'/icons/x-50.png" /></a>';
 $option_2 = get_option("option_2");
 $option_3 = get_option("option_3");
+$option_3 = '<a href="https://truthsocial.com/share?text='.$post_title.'&url='.$post_url.'"><img src="'.$ico_path.'/icons/truth-48.png" /></a>';
 $option_4 = get_option("option_4");
 $option_5 = get_option("option_5");
 $option_6 = get_option("option_6");
 
 
-$content .= '<p class="ww-sociallinks">';
+
+$content .= '<p class="ww-sociallinks"><span>Share via:</span>';
 //X.com
 if($option_1 != ""){
-    $X_ico = '<a href=".$option_1." target="_blank" rel="nofollow"><img src="'.$ico_path.'/icons/x-50.png" /></a>';
+    //$X_ico = '<a href="'.$option_1.'" target="_blank" rel="nofollow"><img src="'.$ico_path.'/icons/x-50.png" /></a>';
+    $X_ico = $option_1;
     $content .= $X_ico;
 }
 
@@ -156,7 +187,7 @@ if($option_2 != ""){
 }
 
 if($option_3 != ""){
-    $X_ico = '<a href="'.$option_3.'" target="_blank" rel="nofollow"><img src="'.$ico_path.'/icons/truth-48.png" /></a>';
+    $X_ico = $option_3; 
     $content .= $X_ico;
     
 }
@@ -189,3 +220,68 @@ return $content;
 }
 // Hook our function to WordPress the_content filter
 add_filter('the_content', 'ww_SocialLinks'); 
+
+//
+// shortcode for follow links
+//
+function ww_SocialLinks_follow(){
+    
+    $ico_path = plugin_dir_url( __FILE__ );
+
+    $option_1 = get_option("option_1");
+    $option_2 = get_option("option_2");
+    $option_3 = get_option("option_3");
+    $option_4 = get_option("option_4");
+    $option_5 = get_option("option_5");
+    $option_6 = get_option("option_6");
+    
+    
+    
+    $content = '<p class="ww-sociallinks"><span>Follow us on:</span>';
+    //X.com
+    if($option_1 != ""){
+        $X_ico = '<a href="'.$option_1.'" target="_blank" rel="nofollow"><img src="'.$ico_path.'/icons/x-50.png" /></a>';
+        $content .= $X_ico;
+    }
+    
+    if($option_2 != ""){
+        $X_ico = '<a href="'.$option_2.'" target="_blank" rel="nofollow"><img src="'.$ico_path.'/icons/rumble-48.png" /></a>';
+        $content .= $X_ico;
+        
+    }
+    
+    if($option_3 != ""){
+        $X_ico = '<a href="'.$option_3.'" target="_blank" rel="nofollow"><img src="'.$ico_path.'/icons/truth-48.png" /></a>';
+        $content .= $X_ico;
+        
+    }
+    
+    if($option_4 != ""){
+        $X_ico = '<a href="'.$option_4.'" target="_blank" rel="nofollow"><img src="'.$ico_path.'/icons/facebook-48.png" /></a>';
+        $content .= $X_ico;
+        
+    }
+    
+    if($option_5 != ""){
+        $X_ico = '<a href="'.$option_5.'" target="_blank" rel="nofollow"><img src="'.$ico_path.'/icons/instagram-48.png" /></a>';
+        $content .= $X_ico;
+        
+    }
+    
+    if($option_6 != ""){
+        $X_ico = '<a href="'.$option_6.'" target="_blank" rel="nofollow"><img src="'.$ico_path.'/icons/youtube-48.png" /></a>';
+        $content .= $X_ico;
+        
+    }
+    
+    
+    $content .= '</p>';
+    
+    return $content;
+    
+    }
+    
+    //
+    // add shortcode
+    //
+        add_shortcode('ww_sociallinks', 'ww_SocialLinks_follow');
