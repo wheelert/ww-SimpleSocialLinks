@@ -237,7 +237,7 @@ function ww_SocialLinks_follow(){
     
     
     
-    $content = '<p class="ww-sociallinks"><span>Follow us on:</span>';
+    $content = '<p class="ww-sociallinks"><span></span>';
     //X.com
     if($option_1 != ""){
         $X_ico = '<a href="'.$option_1.'" target="_blank" rel="nofollow"><img src="'.$ico_path.'/icons/x-50.png" /></a>';
